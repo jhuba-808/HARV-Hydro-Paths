@@ -2,40 +2,6 @@
 ##        FUNCTIONS FOR PIECEWISE REGRESSION
 ## =========================================================================
 
-
-library(dplyr)
-library(lubridate)
-library(segmented)
-library(ggplot2)
-
-# Add SDFAI category to sdfai_results, join to event dataframe by year/month
-add_sdafi_category_and_join <- function(event_df, sdfai_results) {
-  library(lubridate)
-  library(dplyr)
-  
-  sdfai_category <- sdfai_results %>%
-    mutate(
-      year = year(year_month),
-      month = month(year_month),
-      SDFAI_category = case_when(
-        SDFAI > 1.5 ~ "Above Threshold",
-        SDFAI < -1.5 ~ "Below Threshold",
-        TRUE ~ "Normal"
-      )
-    ) %>%
-    dplyr::select(year, month, SDFAI_category)
-  
-  event_df <- event_df %>%
-    mutate(
-      year = year(start_time),
-      month = month(start_time)
-    ) %>%
-    dplyr::left_join(sdfai_category, by = c("year", "month"))
-  
-  return(event_df)
-}
-
-# Run piecewise regression
 run_piecewise <- function(df, site_col, period_label, breakpoint = 50) {
   df_period <- df %>%
     filter(period == period_label, !is.na(.data[[site_col]]))
@@ -48,24 +14,64 @@ run_piecewise <- function(df, site_col, period_label, breakpoint = 50) {
 }
 
 # Plot piecewise regression results
-plot_piecewise <- function(result, site_name, y_var) {
-  seg_model <- result$model
-  df_period <- result$data
+plot_piecewise_regression <- function(data, seg_model, stream_name, 
+                                      x_var, y_var,
+                                      x_label = NULL, y_label = NULL,
+                                      xlim = NULL, ylim = NULL) {
+  # Extract breakpoint and standard error
+  breakpoint <- seg_model$psi[1, 2]
+  breakpoint_se <- seg_model$psi[1, 3]
   
-  ggplot(df_period, aes(x = total_val, y = .data[[y_var]])) +
-    geom_point(aes(color = SDFAI_category), size = 2) +
-    geom_line(aes(y = predict(seg_model, newdata = data.frame(total_val = df_period$total_val))),
-              color = "black", size = 1) +
-    geom_vline(xintercept = seg_model$psi[1, 1], linetype = "dashed", color = "green") +
-    labs(x = "Total Precipitation (mm)",
-         y = "Runoff Depth (mm)",
-         color = "SDFAI Category",
-         title = paste(site_name, "Piecewise Linear Regression")) +
-    theme_classic() +
-    scale_color_manual(values = c(
-      "Above Threshold" = "coral",
-      "Below Threshold" = "green3",
-      "Normal" = "cornflowerblue"
-    )) +
-    coord_cartesian(xlim = c(0, 125), ylim = c(0, 20))
+  # Confidence interval
+  ci_lower <- breakpoint - 1.96 * breakpoint_se
+  ci_upper <- breakpoint + 1.96 * breakpoint_se
+  
+  # Extract slopes
+  slopes <- slope(seg_model)[[x_var]]
+  slope_before <- slopes[1]
+  slope_after <- slopes[2]
+  slope_after_label <- sprintf("Slope: %.2f", slope_after)
+  
+  # Prediction data
+  newdata <- data.frame(setNames(list(data[[x_var]]), x_var))
+  preds <- predict(seg_model, newdata = newdata)
+  
+  # Axis labels fallback
+  if (is.null(x_label)) x_label <- x_var
+  if (is.null(y_label)) y_label <- y_var
+  
+  # Default axis limits if not specified
+  if (is.null(xlim)) xlim <- range(data[[x_var]], na.rm = TRUE)
+  if (is.null(ylim)) ylim <- range(data[[y_var]], na.rm = TRUE)
+  
+  ggplot(data, aes(x = .data[[x_var]], y = .data[[y_var]])) +
+    # Shaded confidence interval
+    annotate("rect", xmin = ci_lower, xmax = ci_upper,
+             ymin = -Inf, ymax = Inf, alpha = 0.2, fill = "steelblue") +
+    
+    geom_point(size = 2, alpha = 0.6, color = "black") +
+    
+    # Regression line
+    geom_line(aes(x = .data[[x_var]], y = preds),
+              color = "orange", size = 1.2) +
+    
+    # Breakpoint line
+    geom_vline(xintercept = breakpoint, linetype = "dashed", color = "steelblue", size = 1) +
+    
+    # Slope annotation
+    annotate("text",
+             x = breakpoint + (xlim[2] - breakpoint) * 0.4,
+             y = ylim[2] * 0.55,
+             label = slope_after_label,
+             color = "orange",
+             hjust = 0,
+             size = 4.5) +
+    
+    labs(
+      x = x_label,
+      y = y_label,
+      title = paste(stream_name, "Piecewise Linear Regression")
+    ) +
+    coord_cartesian(xlim = xlim, ylim = ylim) +
+    theme_classic(base_size = 13)
 }
