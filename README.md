@@ -10,7 +10,7 @@ This repository contains R scripts designed to reproduce the analyses and visual
 - Response time identification and analysis
 - Calculation of DWAAI (dry-wet abrupt alternation index) (Shan et al., 2018)
 
-**Getting Started**
+## **Getting Started**
 Prerequisites
 
 R (version 4.4.1 or higher)
@@ -30,17 +30,17 @@ Required R packages: segmented, tidyverse, lubridate, zoo, dplyr, ggplot2, trend
     install.packages("package_name")
     ```
 
-**Usage**
+## **Usage**
 
 Each script is self-contained with comments and instructions for use. Modify the input file paths and parameters as needed for your data.
 
-**Related Publication**
+## **Related Publication**
 
 For detailed methodology, results, and discussion, please refer to the paper:
 
 {Link to Paper}
 
-**Contact**
+## **Contact**
 
 For questions, please contact:
 Julianna Huba
