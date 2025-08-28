@@ -6,7 +6,7 @@
 # total_val, [site]_ro_mm, period
 
 sites <- c(site1 = "site1_ro_mm", site2 = "site2_ro_mm", site3 = "site3_ro_mm")
-periods <- c("pre-drought", "post-drought")
+periods <- c("Period 1", "Period 2")
 
 results <- list()
 plots <- list()
@@ -22,11 +22,12 @@ for (site in names(sites)) {
       stream_name = paste(site, p),
       x_var = "total_val",
       y_var = sites[[site]],
-      x_label = "P + AR (mm)",
-      y_label = "Runoff (mm)"
+      x_label = "x-lab",
+      y_label = "y-lab"
     )
   }
 }
 
 library(gridExtra)
 do.call(grid.arrange, c(plots, ncol = 2))
+
