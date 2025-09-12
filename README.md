@@ -2,7 +2,7 @@
 
 Code accompanying the paper "Shifting Hydrologic Pathways in Temperate Forest Headwaters Under a Changing Climate"
 
-Huba, J., Boutt, D.F., Moran, B.J., Winnick, M., Matthes, J.
+Huba, J., Boutt, D.F., Moran, B.J., Winnick, M., Matthes, J., Hare, D.
 
 This repository contains R scripts designed to reproduce the analyses and visualizations presented in the above paper. The scripts cover several hydrological analyses including:
 - Storm event identification 
@@ -43,6 +43,6 @@ For detailed methodology, results, and discussion, please refer to the paper:
 ## **Contact**
 
 For questions, please contact:
-Julianna Huba
+Julianna C. Huba
 University of Massachusetts-Amherst
 Email: jhuba@umass.edu
