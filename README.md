@@ -18,7 +18,7 @@ R (version 4.4.1 or higher)
 Required R packages: segmented, tidyverse, lubridate, zoo, dplyr, ggplot2, trend, patchwork, minpack.lm
 
 ## **Installation**
-(For HARV_EVENTS, HARV_PWR, HARV_RESP)
+**For HARV_EVENTS, HARV_PWR, HARV_RESP:**
 
 1. **Clone the repository**:
     ```bash
@@ -30,6 +30,10 @@ Required R packages: segmented, tidyverse, lubridate, zoo, dplyr, ggplot2, trend
     ```r
     install.packages("package_name")
     ```
+
+For DWAAI
+
+1. 
 
 ## **Usage**
 
