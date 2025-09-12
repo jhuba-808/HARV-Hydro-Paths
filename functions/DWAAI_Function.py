@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Sep 12 13:24:45 2025
-
-@author: jhuba
-"""
-
+## ================================================================================
+##        FUNCTIONS FOR DWAAI CALCULATION FROM DAILY PRECIPITATION DATA
+## ================================================================================
 
 import pandas as pd
 import numpy as np
@@ -52,3 +48,4 @@ def compute_dwaai(df, index, pre_days=44, pro_days=10, alpha=1.3):
 
     DWAAI = (K + term1) * weight
     return DWAAI
+
