@@ -22,7 +22,7 @@ Required R packages: segmented, tidyverse, lubridate, zoo, dplyr, ggplot2, trend
 
 1. **Clone the repository**:
     ```bash
-    git clone https://github.com/yourusername/HF-Hydro-Paths.git
+    git clone https://github.com/jhuba-808/HF-Hydro-Paths.git
     ```
 2. Open the scripts in **RStudio** or any R environment.
 
