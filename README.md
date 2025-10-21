@@ -8,7 +8,6 @@ This repository contains R scripts designed to reproduce the analyses and visual
 - Storm event identification 
 - Piecewise Regression for non-linear streamflow response to precipitation
 - Response time identification and analysis
-- Calculation of DWAAI (dry-wet abrupt alternation index) (Shan et al., 2018)
 
 ## **Getting Started**
 Prerequisites
