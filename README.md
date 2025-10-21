@@ -31,10 +31,6 @@ Required R packages: segmented, tidyverse, lubridate, zoo, dplyr, ggplot2, trend
     install.packages("package_name")
     ```
 
-For DWAAI
-
-1. 
-
 ## **Usage**
 
 Each script is self-contained with comments and instructions for use. Modify the input file paths and parameters as needed for your data.
